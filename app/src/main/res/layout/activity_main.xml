@@ -1,0 +1,128 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="#FFFFFFFF"
+             tools:context=".MainActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false">
+
+        <RelativeLayout
+            android:id="@+id/blurred_view"
+            android:layout_width="600dp"
+            android:layout_height="600dp"
+            android:layout_gravity="center"
+            android:clipChildren="false">
+
+            <ImageView
+                android:id="@+id/image0"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_centerInParent="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/p0"/>
+
+            <ImageView
+                android:id="@+id/image1"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_above="@id/image0"
+                android:layout_alignLeft="@id/image0"
+                android:scaleType="centerCrop"
+                android:src="@drawable/p1"/>
+
+            <ImageView
+                android:id="@+id/image2"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_alignLeft="@id/image0"
+                android:layout_below="@id/image0"
+                android:scaleType="centerCrop"
+                android:src="@drawable/p2"/>
+
+            <ImageView
+                android:id="@+id/image3"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_alignTop="@id/image0"
+                android:layout_toLeftOf="@id/image0"
+                android:scaleType="centerCrop"
+                android:src="@drawable/p3"/>
+
+            <ImageView
+                android:id="@+id/image4"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_alignTop="@id/image0"
+                android:layout_toRightOf="@id/image0"
+                android:scaleType="centerCrop"
+                android:src="@drawable/p4"/>
+
+            <ImageView
+                android:id="@+id/image5"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_alignLeft="@id/image3"
+                android:layout_alignTop="@id/image1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/p5"/>
+
+            <ImageView
+                android:id="@+id/image6"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_alignBottom="@id/image2"
+                android:layout_alignLeft="@id/image3"
+                android:scaleType="centerCrop"
+                android:src="@drawable/p6"/>
+
+            <ImageView
+                android:id="@+id/image7"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_alignRight="@id/image4"
+                android:layout_alignTop="@id/image1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/p7"/>
+
+            <ImageView
+                android:id="@+id/image8"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_alignRight="@id/image4"
+                android:layout_alignTop="@id/image2"
+                android:scaleType="centerCrop"
+                android:src="@drawable/p8"/>
+
+        </RelativeLayout>
+    </FrameLayout>
+
+    <com.fivehundredpx.blurringview.BlurringView
+        android:id="@+id/blurring_view"
+        android:layout_width="360dp"
+        android:layout_height="360dp"
+        android:layout_gravity="center"
+        android:background="#AAFFFFFF"/>
+
+    <Button
+        android:id="@+id/shuffle_button"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp"
+        android:onClick="shuffleImages"
+        android:text="Shuffle"/>
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/shuffle_button"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:onClick="jiggleImages"
+        android:text="Shift"/>
+
+</FrameLayout>
