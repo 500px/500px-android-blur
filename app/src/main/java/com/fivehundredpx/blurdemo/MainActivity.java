@@ -1,4 +1,4 @@
-package com.fivehundredpx.blurringviewsample;
+package com.fivehundredpx.blurdemo;
 
 import android.animation.ValueAnimator;
 import android.support.v7.app.ActionBarActivity;
@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.fivehundredpx.blur.BlurringView;
+import com.fivehundredpx.android.blur.BlurringView;
 
 import java.util.Random;
 

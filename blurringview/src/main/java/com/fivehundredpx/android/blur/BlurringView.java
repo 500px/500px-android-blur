@@ -1,4 +1,4 @@
-package com.fivehundredpx.blur;
+package com.fivehundredpx.android.blur;
 
 /**
  * Created by jun on 15-03-12.

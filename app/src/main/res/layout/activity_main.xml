@@ -101,7 +101,7 @@
         </RelativeLayout>
     </FrameLayout>
 
-    <com.fivehundredpx.blur.BlurringView
+    <com.fivehundredpx.android.blur.BlurringView
         android:id="@+id/blurring_view"
         android:layout_width="360dp"
         android:layout_height="360dp"

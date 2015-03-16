@@ -1,4 +1,4 @@
-package com.fivehundredpx.blurringviewsample;
+package com.fivehundredpx.blurdemo;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

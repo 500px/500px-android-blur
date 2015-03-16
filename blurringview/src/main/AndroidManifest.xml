@@ -1,5 +1,5 @@
 <manifest
-    package="com.fivehundredpx.blur"
+    package="com.fivehundredpx.android.blur"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
