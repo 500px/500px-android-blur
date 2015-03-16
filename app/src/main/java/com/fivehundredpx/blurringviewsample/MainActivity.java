@@ -1,16 +1,14 @@
 package com.fivehundredpx.blurringviewsample;
 
 import android.animation.ValueAnimator;
-import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.fivehundredpx.blurringview.BlurringView;
+import com.fivehundredpx.blur.BlurringView;
 
 import java.util.Random;
 
@@ -20,11 +18,9 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (Build.VERSION.SDK_INT > 16) {
-            mBlurringView = (BlurringView) findViewById(R.id.blurring_view);
-            View blurredView = findViewById(R.id.blurred_view);
-            mBlurringView.setBlurredView(blurredView);
-        }
+        mBlurringView = (BlurringView) findViewById(R.id.blurring_view);
+        View blurredView = findViewById(R.id.blurred_view);
+        mBlurringView.setBlurredView(blurredView);
 
         mImageViews[0] = (ImageView) findViewById(R.id.image0);
         mImageViews[1] = (ImageView) findViewById(R.id.image1);
@@ -59,7 +55,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void shuffleImages(View view) {
+    public void shuffle(View view) {
         int newStartIndex;
         do {
             newStartIndex = mImageIds[mRandom.nextInt(mImageIds.length)];
@@ -79,17 +75,17 @@ public class MainActivity extends ActionBarActivity {
         }
     };
 
-    public void jiggleImages(View view) {
-        if (!mJiggled) {
+    public void shift(View view) {
+        if (!mShifted) {
             for (int i = 0; i < mImageViews.length; i++) {
                 mImageViews[i].animate().setUpdateListener(listener).translationX((mRandom.nextFloat() - 0.5f) * 500).translationY((mRandom.nextFloat() - 0.5f) * 500).setDuration(5000).start();
             }
-            mJiggled = true;
+            mShifted = true;
         } else {
             for (int i = 0; i < mImageViews.length; i++) {
                 mImageViews[i].animate().setUpdateListener(listener).translationX(0).translationY(0).setDuration(5000).start();
             }
-            mJiggled = false;
+            mShifted = false;
         }
     }
 
@@ -105,5 +101,5 @@ public class MainActivity extends ActionBarActivity {
 
     private Random mRandom = new Random();
 
-    private boolean mJiggled;
+    private boolean mShifted;
 }
