@@ -1,14 +1,20 @@
-500px Android Blurring View
-===========================
+# 500px Android Blurring View
 
-![Debug drawer](blurdemo.gif)
+## Usage
 
-Usage
------
+First, give the blurring view a reference to the view to be blurred:
 
-Installation
-------------
+``` java
+blurringView.setBlurredView(blurredView);
+```
 
-Demo
-----
+and then whenever the blurred view changes, invalidate the blurring view:
+
+``` java
+blurringView.invalidate();
+```
+
+## Demo
+
+![500px Blurring View Demo](blurdemo.gif "500px Blurring View Demo")
 
