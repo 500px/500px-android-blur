@@ -16,10 +16,14 @@
 
 package com.fivehundredpx.blurdemo;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 
 import com.fivehundredpx.android.blur.BlurringView;
@@ -72,21 +76,39 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private ValueAnimator.AnimatorUpdateListener listener = new ValueAnimator.AnimatorUpdateListener() {
+        @Override
         public void onAnimationUpdate(ValueAnimator animation) {
-            // Invalidates the blurring view for animation updates.
             mBlurringView.invalidate();
         }
     };
 
     public void shift(View view) {
         if (!mShifted) {
-            for (int i = 0; i < mImageViews.length; i++) {
-                mImageViews[i].animate().setUpdateListener(listener).translationX((mRandom.nextFloat() - 0.5f) * 500).translationY((mRandom.nextFloat() - 0.5f) * 500).setDuration(5000).start();
+            for (ImageView imageView : mImageViews) {
+                ObjectAnimator tx = ObjectAnimator.ofFloat(imageView, View.TRANSLATION_X, (mRandom.nextFloat() - 0.5f) * 500);
+                tx.addUpdateListener(listener);
+                ObjectAnimator ty = ObjectAnimator.ofFloat(imageView, View.TRANSLATION_Y, (mRandom.nextFloat() - 0.5f) * 500);
+                ty.addUpdateListener(listener);
+                AnimatorSet set = new AnimatorSet();
+                set.playTogether(tx, ty);
+                set.setDuration(2000);
+                set.setInterpolator(new OvershootInterpolator());
+                set.addListener(new AnimationEndListener(imageView));
+                set.start();
             }
             mShifted = true;
         } else {
-            for (int i = 0; i < mImageViews.length; i++) {
-                mImageViews[i].animate().setUpdateListener(listener).translationX(0).translationY(0).setDuration(5000).start();
+            for (ImageView imageView : mImageViews) {
+                ObjectAnimator tx = ObjectAnimator.ofFloat(imageView, View.TRANSLATION_X, 0);
+                tx.addUpdateListener(listener);
+                ObjectAnimator ty = ObjectAnimator.ofFloat(imageView, View.TRANSLATION_Y, 0);
+                ty.addUpdateListener(listener);
+                AnimatorSet set = new AnimatorSet();
+                set.playTogether(tx, ty);
+                set.setDuration(2000);
+                set.setInterpolator(new OvershootInterpolator());
+                set.addListener(new AnimationEndListener(imageView));
+                set.start();
             }
             mShifted = false;
         }
@@ -105,4 +127,33 @@ public class MainActivity extends ActionBarActivity {
     private Random mRandom = new Random();
 
     private boolean mShifted;
+
+    private static class AnimationEndListener implements Animator.AnimatorListener {
+
+        View mView;
+
+        public AnimationEndListener(View v) {
+            mView = v;
+        }
+
+        @Override
+        public void onAnimationStart(Animator animation) {
+            mView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            mView.setLayerType(View.LAYER_TYPE_NONE, null);
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+            mView.setLayerType(View.LAYER_TYPE_NONE, null);
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {
+
+        }
+    }
 }

@@ -26,6 +26,7 @@ limitations under the License.
         android:clipChildren="false">
 
         <RelativeLayout
+            android:background="@android:color/holo_blue_dark"
             android:id="@+id/blurred_view"
             android:layout_width="600dp"
             android:layout_height="600dp"
@@ -121,7 +122,7 @@ limitations under the License.
         android:layout_width="360dp"
         android:layout_height="360dp"
         android:layout_gravity="center"
-        app:blurRadius="12"
+        app:blurRadius="10"
         app:downsampleFactor="6"
         app:overlayColor="#CCEEEEEE"/>
 

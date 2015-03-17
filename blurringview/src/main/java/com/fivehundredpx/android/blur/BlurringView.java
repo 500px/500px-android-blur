@@ -22,18 +22,17 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.os.Build;
-import android.renderscript.Allocation;
-import android.renderscript.Element;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicBlur;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v8.renderscript.Allocation;
+import android.support.v8.renderscript.Element;
+import android.support.v8.renderscript.RenderScript;
+import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.util.AttributeSet;
 import android.view.View;
 
 /**
  * A custom view for presenting a dynamically blurred version of another view's content.
- * <p>
+ * <p/>
  * Use {@link #setBlurredView(android.view.View)} to set up the reference to the view to be blurred.
  * After that, call {@link #invalidate()} to trigger blurring whenever necessary.
  */
@@ -70,8 +69,12 @@ public class BlurringView extends View {
         super.onDraw(canvas);
         if (mBlurredView != null) {
             if (prepare()) {
-                // Clears the blurring canvas.
-                mBlurringCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                // Clears the blurring canvas with the background color of the underlying view (if it's a solid color) so the edges of the child Views are blured onto the background as well.
+                if (mBlurredView.getBackground() != null && mBlurredView.getBackground() instanceof ColorDrawable){
+                    mBitmapToBlur.eraseColor(((ColorDrawable) mBlurredView.getBackground()).getColor());
+                }else {
+                    mBitmapToBlur.eraseColor(Color.TRANSPARENT);
+                }
 
                 //
                 mBlurredView.draw(mBlurringCanvas);
@@ -83,14 +86,12 @@ public class BlurringView extends View {
                 canvas.drawBitmap(mBlurredBitmap, 0, 0, null);
                 canvas.restore();
             }
-            canvas.drawColor(mOverlayColor, PorterDuff.Mode.OVERLAY);
+            canvas.drawColor(mOverlayColor);
         }
     }
 
     public void setBlurRadius(int radius) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            mBlurScript.setRadius(radius);
-        }
+        mBlurScript.setRadius(radius);
     }
 
     public void setDownsampleFactor(int factor) {
@@ -109,66 +110,65 @@ public class BlurringView extends View {
     }
 
     private void initializeRenderScript(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            mRenderScript = RenderScript.create(context);
-            mBlurScript = ScriptIntrinsicBlur.create(mRenderScript, Element.U8_4(mRenderScript));
-        }
+        mRenderScript = RenderScript.create(context);
+        mBlurScript = ScriptIntrinsicBlur.create(mRenderScript, Element.U8_4(mRenderScript));
     }
 
-    private boolean prepare() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            return false;
-        } else {
-            final int width = mBlurredView.getWidth();
-            final int height = mBlurredView.getHeight();
+    protected boolean prepare() {
+        final int width = mBlurredView.getWidth();
+        final int height = mBlurredView.getHeight();
 
-            if (mBlurringCanvas == null || mDownsampleFactorChanged
-                    || mBlurredViewWidth != width || mBlurredViewHeight != height) {
-                mDownsampleFactorChanged = false;
+        if (mBlurringCanvas == null || mDownsampleFactorChanged
+                || mBlurredViewWidth != width || mBlurredViewHeight != height) {
+            mDownsampleFactorChanged = false;
 
-                mBlurredViewWidth = width;
-                mBlurredViewHeight = height;
+            mBlurredViewWidth = width;
+            mBlurredViewHeight = height;
 
-                int scaledWidth = width / mDownsampleFactor;
-                int scaledHeight = height / mDownsampleFactor;
+            int scaledWidth = width / mDownsampleFactor;
+            int scaledHeight = height / mDownsampleFactor;
 
-                // The following manipulation is to avoid some RenderScript artifacts at the edge.
-                scaledWidth = scaledWidth - scaledWidth % 4 + 4;
-                scaledHeight = scaledHeight - scaledHeight % 4 + 4;
+            // The following manipulation is to avoid some RenderScript artifacts at the edge.
+            scaledWidth = scaledWidth - scaledWidth % 4 + 4;
+            scaledHeight = scaledHeight - scaledHeight % 4 + 4;
 
-                if (mBlurredBitmap == null
-                        || mBlurredBitmap.getWidth() != scaledWidth
-                        || mBlurredBitmap.getHeight() != scaledHeight) {
-                    mBitmapToBlur = Bitmap.createBitmap(scaledWidth, scaledHeight,
-                            Bitmap.Config.ARGB_8888);
-                    if (mBitmapToBlur == null) {
-                        return false;
-                    }
-
-                    mBlurredBitmap = Bitmap.createBitmap(scaledWidth, scaledHeight,
-                            Bitmap.Config.ARGB_8888);
-                    if (mBlurredBitmap == null) {
-                        return false;
-                    }
+            if (mBlurredBitmap == null
+                    || mBlurredBitmap.getWidth() != scaledWidth
+                    || mBlurredBitmap.getHeight() != scaledHeight) {
+                mBitmapToBlur = Bitmap.createBitmap(scaledWidth, scaledHeight,
+                        Bitmap.Config.ARGB_8888);
+                if (mBitmapToBlur == null) {
+                    return false;
                 }
 
-                mBlurringCanvas = new Canvas(mBitmapToBlur);
-                mBlurringCanvas.scale(1f / mDownsampleFactor, 1f / mDownsampleFactor);
-                mBlurInput = Allocation.createFromBitmap(mRenderScript, mBitmapToBlur,
-                        Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
-                mBlurOutput = Allocation.createTyped(mRenderScript, mBlurInput.getType());
+                mBlurredBitmap = Bitmap.createBitmap(scaledWidth, scaledHeight,
+                        Bitmap.Config.ARGB_8888);
+                if (mBlurredBitmap == null) {
+                    return false;
+                }
             }
 
-            return true;
+            mBlurringCanvas = new Canvas(mBitmapToBlur);
+            mBlurringCanvas.scale(1f / mDownsampleFactor, 1f / mDownsampleFactor);
+            mBlurInput = Allocation.createFromBitmap(mRenderScript, mBitmapToBlur,
+                    Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
+            mBlurOutput = Allocation.createTyped(mRenderScript, mBlurInput.getType());
         }
+        return true;
     }
 
-    private void blur() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            mBlurInput.copyFrom(mBitmapToBlur);
-            mBlurScript.setInput(mBlurInput);
-            mBlurScript.forEach(mBlurOutput);
-            mBlurOutput.copyTo(mBlurredBitmap);
+    protected void blur() {
+        mBlurInput.copyFrom(mBitmapToBlur);
+        mBlurScript.setInput(mBlurInput);
+        mBlurScript.forEach(mBlurOutput);
+        mBlurOutput.copyTo(mBlurredBitmap);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mRenderScript != null){
+            mRenderScript.destroy();
         }
     }
 
