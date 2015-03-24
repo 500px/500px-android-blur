@@ -91,7 +91,7 @@ public class MainActivity extends ActionBarActivity {
                 ty.addUpdateListener(listener);
                 AnimatorSet set = new AnimatorSet();
                 set.playTogether(tx, ty);
-                set.setDuration(2000);
+                set.setDuration(3000);
                 set.setInterpolator(new OvershootInterpolator());
                 set.addListener(new AnimationEndListener(imageView));
                 set.start();
@@ -105,7 +105,7 @@ public class MainActivity extends ActionBarActivity {
                 ty.addUpdateListener(listener);
                 AnimatorSet set = new AnimatorSet();
                 set.playTogether(tx, ty);
-                set.setDuration(2000);
+                set.setDuration(3000);
                 set.setInterpolator(new OvershootInterpolator());
                 set.addListener(new AnimationEndListener(imageView));
                 set.start();

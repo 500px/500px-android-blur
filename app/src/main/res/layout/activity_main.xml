@@ -122,9 +122,9 @@ limitations under the License.
         android:layout_width="360dp"
         android:layout_height="360dp"
         android:layout_gravity="center"
-        app:blurRadius="10"
+        app:blurRadius="11"
         app:downsampleFactor="6"
-        app:overlayColor="#CCEEEEEE"/>
+        app:overlayColor="#99FFFFFF"/>
 
     <Button
         android:id="@+id/shuffle_button"
