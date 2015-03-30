@@ -20,3 +20,6 @@ blurringView.invalidate();
 
 ![500px Blurring View Demo](blurdemo.gif "500px Blurring View Demo")
 
+### License
+
+This project is licensed under the terms of [the MIT license](LICENSE.txt).
