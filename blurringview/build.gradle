@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'maven'
 
 android {
     compileSdkVersion 22
@@ -9,7 +9,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         renderscriptTargetApi 21
         renderscriptSupportModeEnabled true
     }
@@ -21,6 +21,11 @@ android {
     }
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+uploadArchives {
+    repositories.mavenDeployer {
+        pom.groupId = 'com.500px'
+        pom.artifactId = 'blurringview'
+        pom.version = android.defaultConfig.versionName
+        repository(url: "file:./releases/")
+    }
 }
