@@ -56,9 +56,9 @@ public class BlurringView extends View {
                 // If the background of the blurred view is a color drawable, we use it to clear
                 // the blurring canvas, which ensures that edges of the child views are blurred
                 // as well; otherwise we clear the blurring canvas with a transparent color.
-                if (mBlurredView.getBackground() != null && mBlurredView.getBackground() instanceof ColorDrawable){
+                if (mBlurredView.getBackground() != null && mBlurredView.getBackground() instanceof ColorDrawable) {
                     mBitmapToBlur.eraseColor(((ColorDrawable) mBlurredView.getBackground()).getColor());
-                }else {
+                } else {
                     mBitmapToBlur.eraseColor(Color.TRANSPARENT);
                 }
 
@@ -152,7 +152,7 @@ public class BlurringView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (mRenderScript != null){
+        if (mRenderScript != null) {
             mRenderScript.destroy();
         }
     }

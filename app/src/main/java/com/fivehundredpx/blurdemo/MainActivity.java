@@ -5,7 +5,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
@@ -17,7 +17,7 @@ import java.util.Random;
 /**
  * Demonstrates the use of the blurring view.
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +45,13 @@ public class MainActivity extends ActionBarActivity {
         // Randomly pick a different start in the array of available images.
         int newStartIndex;
         do {
-            newStartIndex = mImageIds[mRandom.nextInt(mImageIds.length)];
+            newStartIndex = IMAGE_IDS[mRandom.nextInt(IMAGE_IDS.length)];
         } while (newStartIndex == mStartIndex);
         mStartIndex = newStartIndex;
 
         // Update the images for the image views contained in the blurred view.
         for (int i = 0; i < mImageViews.length; i++) {
-            int drawableId = mImageIds[(mStartIndex + i) % mImageIds.length];
+            int drawableId = IMAGE_IDS[(mStartIndex + i) % IMAGE_IDS.length];
             mImageViews[i].setImageDrawable(getResources().getDrawable(drawableId));
         }
 
@@ -100,7 +100,7 @@ public class MainActivity extends ActionBarActivity {
 
     private BlurringView mBlurringView;
 
-    private int[] mImageIds = {
+    private static final int[] IMAGE_IDS = {
             R.drawable.p0, R.drawable.p1, R.drawable.p2, R.drawable.p3, R.drawable.p4,
             R.drawable.p5, R.drawable.p6, R.drawable.p7, R.drawable.p8, R.drawable.p9
     };
@@ -136,8 +136,6 @@ public class MainActivity extends ActionBarActivity {
         }
 
         @Override
-        public void onAnimationRepeat(Animator animation) {
-
-        }
+        public void onAnimationRepeat(Animator animation) {}
     }
 }
