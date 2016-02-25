@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.500px:blurringview:1.0.0'
+    compile 'com.fivehundredpx:blurringview:1.0.0'
 }
 ```
 
