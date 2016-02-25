@@ -23,7 +23,7 @@ android {
 
 uploadArchives {
     repositories.mavenDeployer {
-        pom.groupId = 'com.500px'
+        pom.groupId = 'com.fivehundredpx'
         pom.artifactId = 'blurringview'
         pom.version = android.defaultConfig.versionName
         repository(url: "file:./releases/")
