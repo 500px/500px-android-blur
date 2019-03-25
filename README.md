@@ -16,6 +16,19 @@ dependencies {
 }
 ```
 
+Enable renderscript in your module's `defaultConfig`:
+```groovy
+android {
+    defaultConfig {
+
+        renderscriptTargetApi 21
+        renderscriptSupportModeEnabled true
+        ...
+    }
+}
+
+```
+
 
 ## Usage
 
