@@ -15,3 +15,9 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+#prevents crash while using R8 or proguard
+-keepclasseswithmembernames class * {
+native <methods>;
+}
+-keep class androidx.renderscript.** { *; }
