@@ -1,3 +1,5 @@
+## [Currently unmaintained]
+
 # 500px Android Blurring View
 
 For more information, please see [our blog post](http://developers.500px.com/2015/03/17/a-blurring-view-for-android.html).
