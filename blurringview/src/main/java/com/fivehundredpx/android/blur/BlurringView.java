@@ -62,7 +62,13 @@ public class BlurringView extends View {
                     mBitmapToBlur.eraseColor(Color.TRANSPARENT);
                 }
 
+                int scrollX = mBlurredView.getScrollX();
+                int scrollY = mBlurredView.getScrollY();
+
+                mBlurringCanvas.save();
+                mBlurringCanvas.translate(-scrollX, -scrollY);
                 mBlurredView.draw(mBlurringCanvas);
+                mBlurringCanvas.restore();
                 blur();
 
                 canvas.save();
